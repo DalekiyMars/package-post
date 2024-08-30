@@ -1,4 +1,4 @@
-package com.e_mail.item_post.common;
+package com.e_mail.item_post.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,9 +11,10 @@ import lombok.Data;
 public class Departure {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-   // @Enumerated(EnumType.STRING)
+    // @Enumerated(EnumType.STRING)
     @Column(name = "package_type")
     private String packageType;
 

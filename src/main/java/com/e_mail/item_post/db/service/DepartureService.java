@@ -1,8 +1,8 @@
 package com.e_mail.item_post.db.service;
 
-import com.e_mail.item_post.common.Departure;
+import com.e_mail.item_post.entity.Departure;
 import com.e_mail.item_post.db.repository.DepartureRepository;
-import com.e_mail.item_post.util.DepartureNotFoundException;
+import com.e_mail.item_post.util.ItemPostException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,25 +17,30 @@ import java.util.List;
 public class DepartureService {
     private final DepartureRepository departureRepository;
 
-    public List<Departure> findAll(){
+    public List<Departure> findAll() {
         return departureRepository.findAll();
     }
 
-    public Departure findOne(int id){
-        return departureRepository.findById(id).orElseThrow(DepartureNotFoundException::new);
+    public Departure findOne(int id) {
+        return departureRepository.findById(id).orElseThrow(() -> new ItemPostException("")); // TODO сообщение об ошибке
     }
 
     @Transactional
-    public void save(Departure departure){
+    public void save(Departure departure) {
         departureRepository.save(departure);
     }
+
     @Transactional
-    public void update(int id, Departure departure){
+    public void update(int id, Departure departure) {
+        if (departureRepository.findById(id).isEmpty()) {
+            throw new ItemPostException(""); // TODO сообщение об ошибке
+        }
         departure.setId(id);
         departureRepository.save(departure);
     }
+
     @Transactional
-    public void delete(int id){
+    public void delete(int id) {
         departureRepository.deleteById(id);
     }
 }

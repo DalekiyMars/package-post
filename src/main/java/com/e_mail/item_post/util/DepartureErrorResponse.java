@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class DepartureErrorResponse{
+public class DepartureErrorResponse {
     private String message;
     private long timestamp;
 }

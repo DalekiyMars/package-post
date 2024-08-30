@@ -12,7 +12,7 @@
             </not>
         </preConditions>
         <createTable tableName="departures">
-            <column name="id" type="SERIAL">
+            <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" />
             </column>
             <column name="package_type" type="varchar">
