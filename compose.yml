@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=electronic_mail_post'
+      - 'POSTGRES_USER=user'
+      - 'POSTGRES_PASSWORD=secret'
+
+    ports:
+      - '5435:5432'
