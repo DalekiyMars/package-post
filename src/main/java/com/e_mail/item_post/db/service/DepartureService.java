@@ -2,6 +2,7 @@ package com.e_mail.item_post.db.service;
 
 import com.e_mail.item_post.common.Departure;
 import com.e_mail.item_post.db.repository.DepartureRepository;
+import com.e_mail.item_post.util.DepartureNotFoundException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class DepartureService {
     }
 
     public Departure findOne(int id){
-        return departureRepository.findById(id).orElse(null);
+        return departureRepository.findById(id).orElseThrow(DepartureNotFoundException::new);
     }
 
     @Transactional
