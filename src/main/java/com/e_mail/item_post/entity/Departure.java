@@ -1,6 +1,7 @@
 package com.e_mail.item_post.entity;
 
 import com.e_mail.item_post.common.PackageType;
+import com.e_mail.item_post.common.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -33,4 +34,9 @@ public class Departure {
     @NotNull(message = "Name should not be empty")
     @Size(min = 2, max = 30, message = "Incorrect name format")
     private String ownerName;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Type must be not empty")
+    @Column(name = "status")
+    private Status status;
 }

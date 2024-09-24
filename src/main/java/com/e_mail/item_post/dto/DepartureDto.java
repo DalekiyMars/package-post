@@ -1,6 +1,7 @@
 package com.e_mail.item_post.dto;
 
 import com.e_mail.item_post.common.PackageType;
+import com.e_mail.item_post.common.Status;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
@@ -9,7 +10,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-
 public class DepartureDto {
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Type must be not empty")
@@ -26,4 +26,8 @@ public class DepartureDto {
     @NotBlank(message = "Name should not be empty")
     @Size(min = 2, max = 30, message = "Incorrect name format")
     private String ownerName;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Type must be not empty")
+    private Status status;
 }
