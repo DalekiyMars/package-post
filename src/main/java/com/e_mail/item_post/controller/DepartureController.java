@@ -7,7 +7,6 @@ import com.e_mail.item_post.util.DataFormatNormalize;
 import com.e_mail.item_post.util.DepartureErrorResponse;
 import com.e_mail.item_post.util.ItemPostException;
 import jakarta.validation.Valid;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
 @RequiredArgsConstructor
 @Slf4j
 @RestController
@@ -39,7 +37,7 @@ public class DepartureController {
         return convertToDTO(departureService.findOne(id));
     }
 
-    @PostMapping
+    @PostMapping("/new")
     public ResponseEntity<HttpStatus> registerDeparture(@RequestBody @Valid DepartureDto departureDTO,
                                                         BindingResult result) {
         if (result.hasErrors()) {
@@ -51,7 +49,9 @@ public class DepartureController {
 
             throw new ItemPostException(errmsg.toString());
         }
-        departureService.save(convertToDeparture(departureDTO));
+        var temp = departureService.save(convertToDeparture(departureDTO));
+        log.info("Departure с id " + temp.getId() + "  сохранен");
+
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -65,11 +65,11 @@ public class DepartureController {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    private Departure convertToDeparture(DepartureDto dto){
+    public Departure convertToDeparture(DepartureDto dto) {
         return modelMapper.map(dto, Departure.class);
     }
 
-    private DepartureDto convertToDTO(Departure departure){
+    public DepartureDto convertToDTO(Departure departure) {
         return modelMapper.map(departure, DepartureDto.class);
     }
 }

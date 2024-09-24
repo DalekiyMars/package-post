@@ -11,6 +11,9 @@
             </not>
         </preConditions>
         <createTable tableName="posts">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" />
+            </column>
             <column name="index" type="varchar(6)">
                 <constraints primaryKey="true" />
             </column>

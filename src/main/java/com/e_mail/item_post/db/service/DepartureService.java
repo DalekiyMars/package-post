@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @RequiredArgsConstructor
@@ -28,8 +29,12 @@ public class DepartureService {
     }
 
     @Transactional
-    public void save(Departure departure) {
-        departureRepository.save(departure);
+    public Departure save(Departure departure) {
+        if (Objects.nonNull(departure)){
+            return departureRepository.save(departure);
+        } else {
+            return null;
+        }
     }
 
     @Transactional
@@ -43,6 +48,9 @@ public class DepartureService {
 
     @Transactional
     public void delete(int id) {
-        departureRepository.deleteById(id);
+        if (departureRepository.findById(id).isPresent()){
+            departureRepository.deleteById(id);
+        }
+        throw new ItemPostException(Constants.ExceptionMessages.INCORRECT_DEPARTURE);
     }
 }
