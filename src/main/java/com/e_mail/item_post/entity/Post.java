@@ -1,8 +1,6 @@
-package com.e_mail.item_post.common;
+package com.e_mail.item_post.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -10,11 +8,12 @@ import lombok.Data;
 public class Post {
     @Id
     @Column(name = "index")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String index;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "owner_address")
-    private String owner_address;
+    private String ownerAddress;
 }

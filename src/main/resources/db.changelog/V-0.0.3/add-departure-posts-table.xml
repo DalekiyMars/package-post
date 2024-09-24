@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="v0-0-0-3" author="DalekiyMars">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <tableExists tableName="departures-posts"/>
+            </not>
+        </preConditions>
+        <createTable tableName="departures-posts">
+            <column name="id" type="BIGSERIAL">
+                <constraints foreignKeyName="true"/>
+            </column>
+            <column name="departure_id" type="BIGINT">
+
+            </column>
+            <column name="post_id" type="BIGINT">
+
+            </column>
+            <column name="when_arrived" type="BIGINT">
+
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="departure_id"
+                                 baseTableName="departures-posts"
+                                 constraintName="fk_departure_post_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="departures"/>
+
+    </changeSet>
+
+</databaseChangeLog>
