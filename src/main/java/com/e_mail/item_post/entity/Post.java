@@ -5,10 +5,13 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "posts")
 public class Post {
     @Id
-    @Column(name = "index")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "index")
     private String index;
 
     @Column(name = "name")

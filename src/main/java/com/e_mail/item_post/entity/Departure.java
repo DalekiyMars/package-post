@@ -21,22 +21,18 @@ public class Departure {
     private PackageType packageType;
 
     @Column(name = "owner_index")
-    @NotNull(message = "Index should not be empty")
     @Size(min = 6, max = 6, message = "Your index must be 6 characters")
     private String ownerIndex;
 
     @Column(name = "owner_address")
-    @NotNull(message = "Address should not be empty")
     //@Pattern(regexp = Constants.Patterns.ADDRESS_FORMAT)
     private String ownerAddress;
 
     @Column(name = "owner_name")
-    @NotNull(message = "Name should not be empty")
     @Size(min = 2, max = 30, message = "Incorrect name format")
     private String ownerName;
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Type must be not empty")
     @Column(name = "status")
     private Status status;
 }

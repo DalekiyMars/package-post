@@ -5,7 +5,12 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class DepartureErrorResponse {
+public class RequestErrorResponse {
     private String message;
     private long timestamp;
+
+    public String getDateTime(){
+        var data = new DataFormatNormalize();
+        return data.MillisToDateTime(timestamp);
+    }
 }

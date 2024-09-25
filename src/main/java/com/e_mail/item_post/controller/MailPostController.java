@@ -1,9 +1,8 @@
 package com.e_mail.item_post.controller;
 
-import com.e_mail.item_post.dto.DepartureDto;
-import com.e_mail.item_post.entity.Departure;
-import com.e_mail.item_post.db.service.DepartureService;
-import com.e_mail.item_post.util.DataFormatNormalize;
+import com.e_mail.item_post.db.service.MailPostService;
+import com.e_mail.item_post.dto.PostDto;
+import com.e_mail.item_post.entity.Post;
 import com.e_mail.item_post.util.RequestErrorResponse;
 import com.e_mail.item_post.util.DtoBadRequestException;
 import com.e_mail.item_post.util.PostRequestExceptionHandler;
@@ -16,38 +15,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+@RestController
+@RequestMapping("/posts")
 @RequiredArgsConstructor
 @Slf4j
-@RestController
-@RequestMapping("/departures")
-public class DepartureController {
-    private final DepartureService departureService;
+public class MailPostController {
+
     private final ModelMapper modelMapper;
     private final PostRequestExceptionHandler exceptionHandler;
-
-    @GetMapping()
-    public List<DepartureDto> getAllDepartures() {
-        return departureService.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-    @GetMapping("/{id}")
-    public DepartureDto getDeparture(@PathVariable("id") int id) {
-        return convertToDTO(departureService.findOne(id));
-    }
+    private final MailPostService postService;
 
     @PostMapping("/new")
-    public ResponseEntity<HttpStatus> registerDeparture(@RequestBody @Valid DepartureDto departureDTO,
-                                                        BindingResult result) throws DtoBadRequestException {
+    public ResponseEntity<HttpStatus> addNewPost(@RequestBody @Valid PostDto postDto,
+                                                 BindingResult result){
         if (result.hasErrors()){
             throw new DtoBadRequestException(exceptionHandler.generateMessageAboutErrors(result));
         }
-
-        var temp = departureService.save(convertToDeparture(departureDTO));
-        log.info("Departure с id " + temp.getId() + "  сохранен");
-
+        var temp =  postService.save(convertToPost(postDto));
+        log.info("Post с id " + temp.getIndex() + " сохранен");
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -61,11 +46,11 @@ public class DepartureController {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    public Departure convertToDeparture(DepartureDto dto) {
-        return modelMapper.map(dto, Departure.class);
+    public Post convertToPost(PostDto dto) {
+        return modelMapper.map(dto, Post.class);
     }
 
-    public DepartureDto convertToDTO(Departure departure) {
-        return modelMapper.map(departure, DepartureDto.class);
+    public PostDto convertToDTO(Post post) {
+        return modelMapper.map(post, PostDto.class);
     }
 }

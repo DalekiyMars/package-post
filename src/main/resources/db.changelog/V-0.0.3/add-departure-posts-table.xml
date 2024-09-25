@@ -32,6 +32,14 @@
                                  referencedColumnNames="id"
                                  referencedTableName="departures"/>
 
+        <addForeignKeyConstraint baseColumnNames="post_id"
+                                 baseTableName="departures-posts"
+                                 constraintName="fk_posts_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="posts"/>
+
+
+
     </changeSet>
 
 </databaseChangeLog>
