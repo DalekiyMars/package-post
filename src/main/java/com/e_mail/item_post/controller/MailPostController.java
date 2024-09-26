@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/posts")
 @RequiredArgsConstructor
@@ -36,13 +39,38 @@ public class MailPostController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @PostMapping("/update/{name}")
+
+    public ResponseEntity<HttpStatus> updatePostInfo(@PathVariable("name") String name, @RequestBody @Valid PostDto postDto,
+                                                     BindingResult result){
+        if (result.hasErrors()){
+            throw new DtoBadRequestException(exceptionHandler.generateMessageAboutErrors(result));
+        }
+        var temp = postService.searchPost(name);
+        if (temp.isPresent()){
+            try {
+                updateDataAboutCurrentPost(temp.get().getId(), postDto);
+            } catch (Exception e){
+                log.error("Пост "+ temp.get().getName()+ " не был обновлен");
+            }
+            return ResponseEntity.ok(HttpStatus.ACCEPTED);
+        } else {
+            return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping
+    public List<PostDto> getMailPosts(){
+        return postService.getAllPosts().stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
     @ExceptionHandler
     private ResponseEntity<RequestErrorResponse> departureError(DtoBadRequestException e) {
         RequestErrorResponse response = new RequestErrorResponse(
                 e.getMessage(),
                 System.currentTimeMillis()
         );
-        log.error("Пользователь не cоздан в  " + response.getDateTime() + " - недопустимые данные");
+        log.error(response.getDateTime() + ": Введены недопустимые данные");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -52,5 +80,12 @@ public class MailPostController {
 
     public PostDto convertToDTO(Post post) {
         return modelMapper.map(post, PostDto.class);
+    }
+
+    public void updateDataAboutCurrentPost(int postId, PostDto postDto){
+        var updatedPost = convertToPost(postDto);
+        updatedPost.setId(postId);
+        postService.save(updatedPost);
+        log.info("Пост "+ updatedPost.getName() + " был обновлен");
     }
 }
