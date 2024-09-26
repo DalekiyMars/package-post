@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/posts")
 @RequiredArgsConstructor
@@ -34,6 +37,30 @@ public class MailPostController {
         var temp =  postService.save(convertToPost(postDto));
         log.info("Post с id " + temp.getIndex() + " сохранен");
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("/update/{name}")
+
+    public ResponseEntity<HttpStatus> updatePostInfo(@PathVariable("name") String name, @RequestBody @Valid PostDto postDto,
+                                                     BindingResult result){
+        if (result.hasErrors()){
+            throw new DtoBadRequestException(exceptionHandler.generateMessageAboutErrors(result));
+        }
+        var temp = postService.searchPost(name);
+        if (temp.isPresent()){
+            var updatedPost = postService.updatePost(convertToPost(postDto));
+            if (updatedPost.isPresent()){
+                return ResponseEntity.ok(HttpStatus.ACCEPTED);
+            }
+            return ResponseEntity.badRequest().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping
+    public List<PostDto> getMailPosts(){
+        return postService.getAllPosts().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @ExceptionHandler
