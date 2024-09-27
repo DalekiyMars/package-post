@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface MailPostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findByName(String name);
-    Optional<Post> updatePostById(int id);
+
 }

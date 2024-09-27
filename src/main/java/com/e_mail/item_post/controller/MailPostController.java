@@ -48,13 +48,14 @@ public class MailPostController {
         }
         var temp = postService.searchPost(name);
         if (temp.isPresent()){
-            var updatedPost = postService.updatePost(convertToPost(postDto));
-            if (updatedPost.isPresent()){
-                return ResponseEntity.ok(HttpStatus.ACCEPTED);
+            try {
+                updateDataAboutCurrentPost(temp.get().getId(), postDto);
+            } catch (Exception e){
+                log.error("Пост "+ temp.get().getName()+ " не был обновлен");
             }
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.ok(HttpStatus.ACCEPTED);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -69,7 +70,7 @@ public class MailPostController {
                 e.getMessage(),
                 System.currentTimeMillis()
         );
-        log.error("Пользователь не cоздан в  " + response.getDateTime() + " - недопустимые данные");
+        log.error(response.getDateTime() + ": Введены недопустимые данные");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -79,5 +80,12 @@ public class MailPostController {
 
     public PostDto convertToDTO(Post post) {
         return modelMapper.map(post, PostDto.class);
+    }
+
+    public void updateDataAboutCurrentPost(int postId, PostDto postDto){
+        var updatedPost = convertToPost(postDto);
+        updatedPost.setId(postId);
+        postService.save(updatedPost);
+        log.info("Пост "+ updatedPost.getName() + " был обновлен");
     }
 }

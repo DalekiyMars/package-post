@@ -27,8 +27,4 @@ public class MailPostService{
         return mailPostRepository.findByName(oldPostName);
     }
 
-    @Transactional
-    public Optional<Post> updatePost(Post post){
-        return mailPostRepository.updatePostById(post.getId());
-    }
 }
