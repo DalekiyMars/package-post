@@ -34,7 +34,7 @@ public class DepartureController {
 
     @GetMapping("/{id}")
     public DepartureDto getDeparture(@PathVariable("id") int id) {
-        return convertToDTO(departureService.findOne(id));
+        return modelMapper.map(departureService.findOne(id), DepartureDto.class);
     }
 
     @PostMapping("/new")
@@ -44,7 +44,7 @@ public class DepartureController {
             throw new DtoBadRequestException(exceptionHandler.generateMessageAboutErrors(result));
         }
 
-        var temp = departureService.save(convertToDeparture(departureDTO));
+        var temp = departureService.save(modelMapper.map(departureDTO, Departure.class));
         log.info("Departure с id " + temp.getId() + "  сохранен");
 
         return ResponseEntity.ok(HttpStatus.OK);
@@ -52,7 +52,7 @@ public class DepartureController {
 
     @PostMapping("/update/{id}")
     public ResponseEntity<HttpStatus> updateDataAboutCurrentDeparture(@PathVariable("id") int id, @RequestBody @Valid DepartureDto departureDto){
-        if (departureService.updateDepartureInfo(id, convertToDeparture(departureDto))){
+        if (departureService.updateDepartureInfo(id, modelMapper.map(departureDto, Departure.class))){
             return ResponseEntity.ok(HttpStatus.OK);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpStatus.BAD_REQUEST);
@@ -67,10 +67,6 @@ public class DepartureController {
         );
         log.error("Пользователь не cоздан в  " + response.getDateTime() + " - недопустимые данные");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
-    public Departure convertToDeparture(DepartureDto dto) {
-        return modelMapper.map(dto, Departure.class);
     }
 
     public DepartureDto convertToDTO(Departure departure) {
