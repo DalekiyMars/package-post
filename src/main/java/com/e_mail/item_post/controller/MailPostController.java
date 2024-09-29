@@ -34,14 +34,14 @@ public class MailPostController {
         if (result.hasErrors()){
             throw new DtoBadRequestException(exceptionHandler.generateMessageAboutErrors(result));
         }
-        var temp =  postService.save(convertToPost(postDto));
+        var temp =  postService.save(modelMapper.map(postDto, Post.class));
         log.info("Post с id " + temp.getIndex() + " сохранен");
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public PostDto getPostById(@PathVariable("id") int id){
-        return convertToDTO(postService.getPostById(id));
+        return modelMapper.map(postService.getPostById(id), PostDto.class);
     }
 
     @PostMapping("/update/{name}")
@@ -78,16 +78,12 @@ public class MailPostController {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    public Post convertToPost(PostDto dto) {
-        return modelMapper.map(dto, Post.class);
-    }
-
     public PostDto convertToDTO(Post post) {
         return modelMapper.map(post, PostDto.class);
     }
 
     public void updateDataAboutCurrentPost(int postId, PostDto postDto){
-        var updatedPost = convertToPost(postDto);
+        var updatedPost = modelMapper.map(postDto, Post.class);
         updatedPost.setId(postId);
         postService.save(updatedPost);
         log.info("Пост "+ updatedPost.getName() + " был обновлен");
