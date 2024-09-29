@@ -39,8 +39,12 @@ public class MailPostController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/update/{name}")
+    @GetMapping("/{id}")
+    public PostDto getPostById(@PathVariable("id") int id){
+        return convertToDTO(postService.getPostById(id));
+    }
 
+    @PostMapping("/update/{name}")
     public ResponseEntity<HttpStatus> updatePostInfo(@PathVariable("name") String name, @RequestBody @Valid PostDto postDto,
                                                      BindingResult result){
         if (result.hasErrors()){

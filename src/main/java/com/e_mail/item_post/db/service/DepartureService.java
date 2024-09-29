@@ -37,13 +37,19 @@ public class DepartureService {
         }
     }
 
+
     @Transactional
-    public void update(int id, Departure departure) {
-        if (departureRepository.findById(id).isEmpty()) {
-            throw new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_DEPARTURE);
+    public boolean updateDepartureInfo(int id, Departure updtdDeparture){
+        try {
+            var departure = findOne(id);
+            departure = updtdDeparture;
+            departure.setId(id);
+            departureRepository.save(departure);
+            return true;
+        } catch (Exception e){
+            return false;
         }
-        departure.setId(id);
-        departureRepository.save(departure);
+
     }
 
     @Transactional

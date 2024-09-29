@@ -1,7 +1,9 @@
 package com.e_mail.item_post.db.service;
 
+import com.e_mail.item_post.constants.Constants;
 import com.e_mail.item_post.db.repository.MailPostRepository;
 import com.e_mail.item_post.entity.Post;
+import com.e_mail.item_post.util.DtoBadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,10 @@ public class MailPostService{
 
     public List<Post> getAllPosts(){
         return mailPostRepository.findAll();
+    }
+
+    public Post getPostById(int id){
+        return mailPostRepository.findById(id).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_DEPARTURE));
     }
 
     public Optional<Post> searchPost(String oldPostName){

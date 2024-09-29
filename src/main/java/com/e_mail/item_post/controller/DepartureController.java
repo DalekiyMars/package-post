@@ -3,7 +3,6 @@ package com.e_mail.item_post.controller;
 import com.e_mail.item_post.dto.DepartureDto;
 import com.e_mail.item_post.entity.Departure;
 import com.e_mail.item_post.db.service.DepartureService;
-import com.e_mail.item_post.util.DataFormatNormalize;
 import com.e_mail.item_post.util.RequestErrorResponse;
 import com.e_mail.item_post.util.DtoBadRequestException;
 import com.e_mail.item_post.util.PostRequestExceptionHandler;
@@ -49,6 +48,15 @@ public class DepartureController {
         log.info("Departure с id " + temp.getId() + "  сохранен");
 
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<HttpStatus> updateDataAboutCurrentDeparture(@PathVariable("id") int id, @RequestBody @Valid DepartureDto departureDto){
+        if (departureService.updateDepartureInfo(id, convertToDeparture(departureDto))){
+            return ResponseEntity.ok(HttpStatus.OK);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @ExceptionHandler
