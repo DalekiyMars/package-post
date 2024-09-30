@@ -3,7 +3,6 @@ package com.e_mail.item_post.controller;
 import com.e_mail.item_post.db.service.MailPostService;
 import com.e_mail.item_post.dto.PostDto;
 import com.e_mail.item_post.entity.Post;
-import com.e_mail.item_post.util.RequestErrorResponse;
 import com.e_mail.item_post.util.DtoBadRequestException;
 import com.e_mail.item_post.util.PostRequestExceptionHandler;
 import jakarta.validation.Valid;
@@ -65,21 +64,7 @@ public class MailPostController {
 
     @GetMapping
     public List<PostDto> getMailPosts(){
-        return postService.getAllPosts().stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-//    @ExceptionHandler
-//    private ResponseEntity<RequestErrorResponse> departureError(DtoBadRequestException e) {
-//        RequestErrorResponse response = new RequestErrorResponse(
-//                e.getMessage(),
-//                System.currentTimeMillis()
-//        );
-//        log.error(response.getDateTime() + ": Введены недопустимые данные");
-//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//    }
-
-    public PostDto convertToDTO(Post post) {
-        return modelMapper.map(post, PostDto.class);
+        return postService.getAllPosts().stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
     }
 
     public void updateDataAboutCurrentPost(int postId, PostDto postDto){

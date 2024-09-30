@@ -1,11 +1,9 @@
 package com.e_mail.item_post.controller;
 
+import com.e_mail.item_post.db.service.DepartureService;
 import com.e_mail.item_post.dto.DepartureDto;
 import com.e_mail.item_post.entity.Departure;
-import com.e_mail.item_post.db.service.DepartureService;
-import com.e_mail.item_post.util.RequestErrorResponse;
 import com.e_mail.item_post.util.DtoBadRequestException;
-import com.e_mail.item_post.util.PostRequestExceptionHandler;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,11 +23,10 @@ import java.util.stream.Collectors;
 public class DepartureController {
     private final DepartureService departureService;
     private final ModelMapper modelMapper;
-    private final PostRequestExceptionHandler exceptionHandler;
 
     @GetMapping()
     public List<DepartureDto> getAllDepartures() {
-        return departureService.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+        return departureService.findAll().stream().map(departure ->  modelMapper.map(departure, DepartureDto.class)).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -39,7 +35,7 @@ public class DepartureController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<HttpStatus> registerDeparture(@RequestBody @Valid DepartureDto departureDTO) throws DtoBadRequestException {
+    public ResponseEntity<HttpStatus> registerDeparture(@RequestBody DepartureDto departureDTO) throws DtoBadRequestException {
         try {
             var temp = departureService.save(modelMapper.map(departureDTO, Departure.class));
             log.info("Departure с id " + temp.getId() + "  сохранен");
@@ -56,9 +52,5 @@ public class DepartureController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpStatus.BAD_REQUEST);
         }
-    }
-
-    public DepartureDto convertToDTO(Departure departure) {
-        return modelMapper.map(departure, DepartureDto.class);
     }
 }
