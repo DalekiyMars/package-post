@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -38,16 +39,14 @@ public class DepartureController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<HttpStatus> registerDeparture(@RequestBody @Valid DepartureDto departureDTO,
-                                                        BindingResult result) throws DtoBadRequestException {
-        if (result.hasErrors()){
-            throw new DtoBadRequestException(exceptionHandler.generateMessageAboutErrors(result));
+    public ResponseEntity<HttpStatus> registerDeparture(@RequestBody @Valid DepartureDto departureDTO) throws DtoBadRequestException {
+        try {
+            var temp = departureService.save(modelMapper.map(departureDTO, Departure.class));
+            log.info("Departure с id " + temp.getId() + "  сохранен");
+            return ResponseEntity.ok(HttpStatus.OK);
+        } catch (ValidationException validationException){
+            throw new DtoBadRequestException("Одно или несколько полей не отвечают требованиям!");
         }
-
-        var temp = departureService.save(modelMapper.map(departureDTO, Departure.class));
-        log.info("Departure с id " + temp.getId() + "  сохранен");
-
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PostMapping("/update/{id}")
@@ -57,16 +56,6 @@ public class DepartureController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<RequestErrorResponse> departureError(DtoBadRequestException e) {
-        RequestErrorResponse response = new RequestErrorResponse(
-                e.getMessage(),
-                System.currentTimeMillis()
-        );
-        log.error("Пользователь не cоздан в  " + response.getDateTime() + " - недопустимые данные");
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     public DepartureDto convertToDTO(Departure departure) {

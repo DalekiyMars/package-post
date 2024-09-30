@@ -68,15 +68,15 @@ public class MailPostController {
         return postService.getAllPosts().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    @ExceptionHandler
-    private ResponseEntity<RequestErrorResponse> departureError(DtoBadRequestException e) {
-        RequestErrorResponse response = new RequestErrorResponse(
-                e.getMessage(),
-                System.currentTimeMillis()
-        );
-        log.error(response.getDateTime() + ": Введены недопустимые данные");
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler
+//    private ResponseEntity<RequestErrorResponse> departureError(DtoBadRequestException e) {
+//        RequestErrorResponse response = new RequestErrorResponse(
+//                e.getMessage(),
+//                System.currentTimeMillis()
+//        );
+//        log.error(response.getDateTime() + ": Введены недопустимые данные");
+//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//    }
 
     public PostDto convertToDTO(Post post) {
         return modelMapper.map(post, PostDto.class);
