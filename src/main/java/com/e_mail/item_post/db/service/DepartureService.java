@@ -40,15 +40,11 @@ public class DepartureService {
 
     @Transactional
     public boolean updateDepartureInfo(int id, Departure updtdDeparture){
-        try {
             var departure = findOne(id);
             departure = updtdDeparture;
             departure.setId(id);
             departureRepository.save(departure);
             return true;
-        } catch (Exception e){
-            return false;
-        }
 
     }
 

@@ -3,14 +3,12 @@ package com.e_mail.item_post.controller;
 import com.e_mail.item_post.db.service.DepartureService;
 import com.e_mail.item_post.dto.DepartureDto;
 import com.e_mail.item_post.entity.Departure;
-import com.e_mail.item_post.util.DtoBadRequestException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +24,9 @@ public class DepartureController {
 
     @GetMapping()
     public List<DepartureDto> getAllDepartures() {
-        return departureService.findAll().stream().map(departure ->  modelMapper.map(departure, DepartureDto.class)).collect(Collectors.toList());
+        return departureService.findAll().stream()
+                .map(departure ->  modelMapper.map(departure, DepartureDto.class))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -35,22 +35,16 @@ public class DepartureController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<HttpStatus> registerDeparture(@RequestBody DepartureDto departureDTO) throws DtoBadRequestException {
-        try {
-            var temp = departureService.save(modelMapper.map(departureDTO, Departure.class));
-            log.info("Departure с id " + temp.getId() + "  сохранен");
-            return ResponseEntity.ok(HttpStatus.OK);
-        } catch (ValidationException validationException){
-            throw new DtoBadRequestException("Одно или несколько полей не отвечают требованиям!");
-        }
+    public ResponseEntity<HttpStatus> registerDeparture(@RequestBody @Validated DepartureDto departureDTO) {
+        var temp = departureService.save(modelMapper.map(departureDTO, Departure.class));
+        log.info("Departure с id " + temp.getId() + "  сохранен");
+        return ResponseEntity.ok(HttpStatus.OK);
+
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<HttpStatus> updateDataAboutCurrentDeparture(@PathVariable("id") int id, @RequestBody @Valid DepartureDto departureDto){
-        if (departureService.updateDepartureInfo(id, modelMapper.map(departureDto, Departure.class))){
-            return ResponseEntity.ok(HttpStatus.OK);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<HttpStatus> updateDataAboutCurrentDeparture(@PathVariable("id") int id, @RequestBody DepartureDto departureDto){
+        departureService.updateDepartureInfo(id, modelMapper.map(departureDto, Departure.class));
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +25,11 @@ public class MailPostService{
     }
 
     public Post getPostById(int id){
-        return mailPostRepository.findById(id).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_DEPARTURE));
+        return mailPostRepository.findById(id).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
     }
 
-    public Optional<Post> searchPost(String oldPostName){
-        return mailPostRepository.findByName(oldPostName);
+    public Post searchPost(String oldPostName){
+        return mailPostRepository.findByName(oldPostName).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
     }
 
 }
