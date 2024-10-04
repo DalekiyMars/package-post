@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MailPostService{
+public class PostService {
     private final MailPostRepository mailPostRepository;
 
     @Transactional
@@ -36,12 +36,9 @@ public class MailPostService{
 
     @Transactional
     public void delete(String oldPostName){
-        try {
-            mailPostRepository.delete(searchPost(oldPostName));
-            log.info("Post с именем " + oldPostName + " удален");
-        } catch (Exception e){
-            log.info("Post с именем " + oldPostName + "не был удален");
-            throw new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST);
-        }
+        var foundPost = searchPost(oldPostName);
+        log.info(foundPost.toString() + " будет удален");
+        mailPostRepository.delete(foundPost);
+
     }
 }

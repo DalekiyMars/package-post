@@ -18,7 +18,6 @@ import java.util.Objects;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
-// TODO посмотреть про swagger
 public class DepartureService {
     private final DepartureRepository departureRepository;
 
@@ -41,20 +40,17 @@ public class DepartureService {
 
     @Transactional
     public void updateDepartureInfo(int id, Departure updtdDeparture){
-            var departure = findOne(id);
-            departure = updtdDeparture;
-            departure.setId(id);
-            departureRepository.save(departure);
+        var departure = findOne(id);
+        departure = updtdDeparture;
+        departure.setId(id);
+        departureRepository.save(departure);
     }
 
     @Transactional
     public void delete(int id) {
-        try{
-            departureRepository.delete(findOne(id));
-            log.info("Departure c id " + id + " удален");
-        } catch (Exception e){
-            log.info("Departure c id " + id + "не был удален");
-            throw new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_DEPARTURE);
-        }
+        var foundDeparture = findOne(id);
+        log.info(foundDeparture.toString() + " будет удален");
+        departureRepository.delete(foundDeparture);
+
     }
 }

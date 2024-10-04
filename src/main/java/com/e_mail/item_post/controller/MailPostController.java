@@ -1,6 +1,6 @@
 package com.e_mail.item_post.controller;
 
-import com.e_mail.item_post.db.service.MailPostService;
+import com.e_mail.item_post.db.service.PostService;
 import com.e_mail.item_post.dto.PostDto;
 import com.e_mail.item_post.entity.Post;
 import com.e_mail.item_post.util.DtoBadRequestException;
@@ -25,7 +25,7 @@ public class MailPostController {
 
     private final ModelMapper modelMapper;
     private final PostRequestExceptionHandler exceptionHandler;
-    private final MailPostService postService;
+    private final PostService postService;
 
     @PostMapping("/new")
     public ResponseEntity<HttpStatus> addNewPost(@RequestBody @Valid PostDto postDto,

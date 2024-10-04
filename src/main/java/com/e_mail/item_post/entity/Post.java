@@ -2,8 +2,10 @@ package com.e_mail.item_post.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 @Entity
 @Table(name = "posts")
 public class Post {
@@ -19,4 +21,8 @@ public class Post {
 
     @Column(name = "owner_address")
     private String ownerAddress;
+
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
+//    private List<Departure> postWithThisDeparture = new ArrayList<>();
+
 }

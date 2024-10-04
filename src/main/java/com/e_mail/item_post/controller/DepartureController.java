@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/departures")
+//TODO добавить описание swagger
 public class DepartureController {
     private final DepartureService departureService;
     private final ModelMapper modelMapper;

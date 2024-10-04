@@ -3,6 +3,7 @@ package com.e_mail.item_post.controller;
 import com.e_mail.item_post.util.DtoBadRequestException;
 import com.e_mail.item_post.util.ExceptionMessageCreator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.spi.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
+@Slf4j
 public class ExceptionApiHandler {
     private final ExceptionMessageCreator exceptionMessageCreator;
 
@@ -32,4 +34,10 @@ public class ExceptionApiHandler {
                 .body(exceptionMessageCreator.getExceptionMessages(exception));
     }
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus
+    public ResponseEntity<ErrorMessage> unknownException(Exception exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorMessage(exception.getMessage()));
+    }
 }
