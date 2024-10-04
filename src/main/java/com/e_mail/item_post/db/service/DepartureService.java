@@ -6,6 +6,7 @@ import com.e_mail.item_post.db.repository.DepartureRepository;
 import com.e_mail.item_post.util.DtoBadRequestException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
 
 @Data
 @RequiredArgsConstructor
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 // TODO посмотреть про swagger
@@ -37,22 +39,22 @@ public class DepartureService {
         }
     }
 
-
     @Transactional
-    public boolean updateDepartureInfo(int id, Departure updtdDeparture){
+    public void updateDepartureInfo(int id, Departure updtdDeparture){
             var departure = findOne(id);
             departure = updtdDeparture;
             departure.setId(id);
             departureRepository.save(departure);
-            return true;
-
     }
 
     @Transactional
     public void delete(int id) {
-        if (departureRepository.findById(id).isPresent()){
-            departureRepository.deleteById(id);
+        try{
+            departureRepository.delete(findOne(id));
+            log.info("Departure c id " + id + " удален");
+        } catch (Exception e){
+            log.info("Departure c id " + id + "не был удален");
+            throw new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_DEPARTURE);
         }
-        throw new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_DEPARTURE);
     }
 }

@@ -57,6 +57,12 @@ public class MailPostController {
                 .collect(Collectors.toList());
     }
 
+    @DeleteMapping("/delete/{name}")
+    public ResponseEntity<HttpStatus> deletePost(@PathVariable("name") String name){
+        postService.delete(name);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     public void updateDataAboutCurrentPost(int postId, PostDto postDto){
         var updatedPost = modelMapper.map(postDto, Post.class);
         updatedPost.setId(postId);

@@ -5,12 +5,14 @@ import com.e_mail.item_post.db.repository.MailPostRepository;
 import com.e_mail.item_post.entity.Post;
 import com.e_mail.item_post.util.DtoBadRequestException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MailPostService{
     private final MailPostRepository mailPostRepository;
@@ -32,4 +34,14 @@ public class MailPostService{
         return mailPostRepository.findByName(oldPostName).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
     }
 
+    @Transactional
+    public void delete(String oldPostName){
+        try {
+            mailPostRepository.delete(searchPost(oldPostName));
+            log.info("Post с именем " + oldPostName + " удален");
+        } catch (Exception e){
+            log.info("Post с именем " + oldPostName + "не был удален");
+            throw new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST);
+        }
+    }
 }

@@ -47,4 +47,10 @@ public class DepartureController {
         departureService.updateDepartureInfo(id, modelMapper.map(departureDto, Departure.class));
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<HttpStatus> deleteDeparture(@PathVariable("id") int id){
+        departureService.delete(id);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }
