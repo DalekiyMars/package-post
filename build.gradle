@@ -30,7 +30,7 @@ dependencies {
 	implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
 	implementation 'io.swagger.core.v3:swagger-annotations:2.2.22'
 	implementation 'org.modelmapper:modelmapper:3.2.1'
-	implementation 'io.swagger.core.v3:swagger-annotations:2.2.23'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 
 
 
