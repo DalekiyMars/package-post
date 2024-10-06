@@ -17,7 +17,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class DepartureService {
     private final DepartureRepository departureRepository;
 
@@ -29,7 +29,6 @@ public class DepartureService {
         return departureRepository.findById(id).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_DEPARTURE));
     }
 
-    @Transactional
     public Departure save(Departure departure) {
         if (Objects.nonNull(departure)){
             return departureRepository.save(departure);
@@ -38,7 +37,6 @@ public class DepartureService {
         }
     }
 
-    @Transactional
     public void updateDepartureInfo(int id, Departure updtdDeparture){
         var departure = findOne(id);
         departure = updtdDeparture;
@@ -46,7 +44,6 @@ public class DepartureService {
         departureRepository.save(departure);
     }
 
-    @Transactional
     public void delete(int id) {
         var foundDeparture = findOne(id);
         log.info(foundDeparture.toString() + " будет удален");

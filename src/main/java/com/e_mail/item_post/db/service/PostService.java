@@ -30,13 +30,13 @@ public class PostService {
         return mailPostRepository.findById(id).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
     }
 
-    public Post searchPost(String oldPostName){
-        return mailPostRepository.findByName(oldPostName).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
+    public Post searchPost(int id){
+        return mailPostRepository.findById(id).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
     }
 
     @Transactional
-    public void delete(String oldPostName){
-        var foundPost = searchPost(oldPostName);
+    public void delete(int id){
+        var foundPost = searchPost(id);
         log.info(foundPost.toString() + " будет удален");
         mailPostRepository.delete(foundPost);
 

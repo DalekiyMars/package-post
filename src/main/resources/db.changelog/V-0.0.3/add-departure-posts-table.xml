@@ -21,9 +21,8 @@
             <column name="post_id" type="BIGINT">
 
             </column>
-            <column name="when_arrived" type="BIGINT">
-
-            </column>
+            <column name="when_arrived" type="TIMESTAMP"
+                    defaultValueComputed="CURRENT_TIMESTAMP" />
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="departure_id"

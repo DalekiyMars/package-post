@@ -6,11 +6,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.Accessors;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @ToString
 @Entity
 @Table(name = "departures")
+@Accessors(chain = true)
 public class Departure {
     @Id
     @Column(name = "id")
@@ -37,6 +42,8 @@ public class Departure {
     @Column(name = "status")
     private Status status;
 
-//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Post post;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "departure")
+    private List<DeparturePost> departurePosts = new ArrayList<>();
+
+
 }

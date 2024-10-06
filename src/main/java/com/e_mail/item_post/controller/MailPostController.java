@@ -3,15 +3,12 @@ package com.e_mail.item_post.controller;
 import com.e_mail.item_post.db.service.PostService;
 import com.e_mail.item_post.dto.PostDto;
 import com.e_mail.item_post.entity.Post;
-import com.e_mail.item_post.util.DtoBadRequestException;
-import com.e_mail.item_post.util.PostRequestExceptionHandler;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,15 +21,10 @@ import java.util.stream.Collectors;
 public class MailPostController {
 
     private final ModelMapper modelMapper;
-    private final PostRequestExceptionHandler exceptionHandler;
     private final PostService postService;
 
     @PostMapping("/new")
-    public ResponseEntity<HttpStatus> addNewPost(@RequestBody @Valid PostDto postDto,
-                                                 BindingResult result){
-        if (result.hasErrors()){
-            throw new DtoBadRequestException(exceptionHandler.generateMessageAboutErrors(result));
-        }
+    public ResponseEntity<HttpStatus> addNewPost(@RequestBody @Validated PostDto postDto){
         var temp =  postService.save(modelMapper.map(postDto, Post.class));
         log.info("Post с id " + temp.getIndex() + " сохранен");
         return ResponseEntity.ok(HttpStatus.OK);
@@ -43,9 +35,9 @@ public class MailPostController {
         return modelMapper.map(postService.getPostById(id), PostDto.class);
     }
 
-    @PostMapping("/update/{name}")
-    public ResponseEntity<HttpStatus> updatePostInfo(@PathVariable("name") String name, @RequestBody PostDto postDto){
-        var temp = postService.searchPost(name);
+    @PostMapping("/update/{id}")
+    public ResponseEntity<HttpStatus> updatePostInfo(@PathVariable("id") int id, @RequestBody @Validated PostDto postDto){
+        var temp = postService.searchPost(id);
         updateDataAboutCurrentPost(temp.getId(), postDto);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
@@ -57,9 +49,9 @@ public class MailPostController {
                 .collect(Collectors.toList());
     }
 
-    @DeleteMapping("/delete/{name}")
-    public ResponseEntity<HttpStatus> deletePost(@PathVariable("name") String name){
-        postService.delete(name);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") int id){
+        postService.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

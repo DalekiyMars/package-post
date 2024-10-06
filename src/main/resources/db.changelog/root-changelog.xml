@@ -7,5 +7,6 @@
     <include file="V-0.0.1/accumulate-changelog.xml" relativeToChangelogFile="true"/>
     <include file="V-0.0.2/accumulate-changelog.xml" relativeToChangelogFile="true"/>
     <include file="V-0.0.3/accumulate-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="V-0.0.4/accumulate-changelog.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
