@@ -14,7 +14,7 @@ public class DeparturePostDto {
     private UUID departureId;
 
     @NotNull(message = "Post id could not be empty")
-    private int postId;
+    private UUID postId;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "New status could not be this type")

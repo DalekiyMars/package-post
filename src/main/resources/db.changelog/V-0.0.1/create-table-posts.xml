@@ -11,7 +11,7 @@
             </not>
         </preConditions>
         <createTable tableName="posts">
-            <column name="id" type="uuid">
+            <column name="id" type="uuid" autoIncrement="1">
                 <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="index" type="varchar(6)"/>

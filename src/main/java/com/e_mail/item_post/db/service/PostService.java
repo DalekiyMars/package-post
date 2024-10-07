@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -26,16 +27,16 @@ public class PostService {
         return mailPostRepository.findAll();
     }
 
-    public Post getPostById(int id){
+    public Post getPostById(UUID id){
         return mailPostRepository.findById(id).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
     }
 
-    public Post searchPost(int id){
+    public Post searchPost(UUID id){
         return mailPostRepository.findById(id).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
     }
 
     @Transactional
-    public void delete(int id){
+    public void delete(UUID id){
         var foundPost = searchPost(id);
         log.info(foundPost.toString() + " будет удален");
         mailPostRepository.delete(foundPost);

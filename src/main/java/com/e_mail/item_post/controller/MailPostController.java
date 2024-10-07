@@ -27,17 +27,17 @@ public class MailPostController {
     @PostMapping("/new")
     public ResponseEntity<HttpStatus> addNewPost(@RequestBody @Validated PostDto postDto){
         var temp =  postService.save(modelMapper.map(postDto, Post.class));
-        log.info("Post с id " + temp.getIndex() + " сохранен");
+        log.info("Post с id " + temp.getId() + " сохранен");
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public PostDto getPostById(@PathVariable("id") int id){
+    public PostDto getPostById(@PathVariable("id") UUID id){
         return modelMapper.map(postService.getPostById(id), PostDto.class);
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<HttpStatus> updatePostInfo(@PathVariable("id") int id, @RequestBody @Validated PostDto postDto){
+    public ResponseEntity<HttpStatus> updatePostInfo(@PathVariable("id") UUID id, @RequestBody @Validated PostDto postDto){
         var temp = postService.searchPost(id);
         updateDataAboutCurrentPost(temp.getId(), postDto);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
@@ -51,7 +51,7 @@ public class MailPostController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") int id){
+    public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") UUID id){
         postService.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }

@@ -24,6 +24,7 @@ public class DeparturePostController {
     private final DeparturePostService departurePostService;
     private final DepartureService departureService;
     private final PostService postService;
+
     @PostMapping("/new")
     public ResponseEntity<HttpStatus> saveDeparturePost(@RequestBody
                                                         @Validated DeparturePostDto departurePostDto){
@@ -35,4 +36,14 @@ public class DeparturePostController {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+//    @PostMapping("/{departure_id}")
+//    public DeparturePostDto searchDeparturePost(@RequestBody
+//                                                        @Validated UUID departure_id){
+//        //TODO вывод экземпляра через id у departure
+//
+//        //return ResponseEntity.ok(HttpStatus.OK);
+//    }
+
+
 }
