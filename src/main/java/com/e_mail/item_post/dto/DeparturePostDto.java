@@ -6,10 +6,12 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class DeparturePostDto {
     @NotNull(message = "Departure id could not be empty")
-    private int departureId;
+    private UUID departureId;
 
     @NotNull(message = "Post id could not be empty")
     private int postId;

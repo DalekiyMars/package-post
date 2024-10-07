@@ -15,10 +15,10 @@
             <column name="id" type="BIGSERIAL">
                 <constraints foreignKeyName="true"/>
             </column>
-            <column name="departure_id" type="BIGINT">
+            <column name="departure_id" type="uuid">
 
             </column>
-            <column name="post_id" type="BIGINT">
+            <column name="post_id" type="uuid">
 
             </column>
             <column name="when_arrived" type="TIMESTAMP"

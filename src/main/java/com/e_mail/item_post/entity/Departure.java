@@ -7,9 +7,11 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @ToString
@@ -19,8 +21,9 @@ import java.util.List;
 public class Departure {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
+    private UUID id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "package_type")

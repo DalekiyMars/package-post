@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -55,7 +56,7 @@ public class MailPostController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    public void updateDataAboutCurrentPost(int postId, PostDto postDto){
+    public void updateDataAboutCurrentPost(UUID postId, PostDto postDto){
         var updatedPost = modelMapper.map(postDto, Post.class);
         updatedPost.setId(postId);
         postService.save(updatedPost);
