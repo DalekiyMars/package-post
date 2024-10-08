@@ -3,11 +3,12 @@ package com.e_mail.item_post.entity;
 import com.e_mail.item_post.common.PackageType;
 import com.e_mail.item_post.common.Status;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 @Entity
 @Table(name = "departures")
 public class Departure {
@@ -35,4 +36,7 @@ public class Departure {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
+
+//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private Post post;
 }

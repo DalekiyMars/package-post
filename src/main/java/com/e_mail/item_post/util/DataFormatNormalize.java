@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 @Component
 public class DataFormatNormalize {
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public String MillisToDateTime(long millis) {
         return sdf.format(millis);

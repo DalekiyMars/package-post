@@ -30,14 +30,14 @@ public class DepartureControllerTest {
     @Test
     void registerDepartureTest_departureRegistered() throws JsonProcessingException {
         var departureDto = objectMapper.readValue(DEPARTURE_DTO_PATH, DepartureDto.class);
-        var res = departureController.registerDeparture(departureDto, bindingResult);
+        var res = departureController.registerDeparture(departureDto);
 
     }
 
     @Test
     void registerDepartureTest_departureNotRegistered() throws JsonProcessingException {
         var departureDto = objectMapper.readValue(DEPARTURE_DTO_PATH, DepartureDto.class);
-        var res = departureController.registerDeparture(departureDto, bindingResult);
+        var res = departureController.registerDeparture(departureDto);
 
         assertEquals(ResponseEntity.ok(HttpStatus.OK), res);
     }

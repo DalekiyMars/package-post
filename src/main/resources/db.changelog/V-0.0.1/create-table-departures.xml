@@ -16,7 +16,6 @@
                 <constraints primaryKey="true" />
             </column>
             <column name="package_type" type="varchar">
-                <constraints unique="true"/>
             </column>
             <column name="owner_index" type="varchar(6)">
 

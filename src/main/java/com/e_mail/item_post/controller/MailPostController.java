@@ -1,9 +1,8 @@
 package com.e_mail.item_post.controller;
 
-import com.e_mail.item_post.db.service.MailPostService;
+import com.e_mail.item_post.db.service.PostService;
 import com.e_mail.item_post.dto.PostDto;
 import com.e_mail.item_post.entity.Post;
-import com.e_mail.item_post.util.RequestErrorResponse;
 import com.e_mail.item_post.util.DtoBadRequestException;
 import com.e_mail.item_post.util.PostRequestExceptionHandler;
 import jakarta.validation.Valid;
@@ -15,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/posts")
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class MailPostController {
 
     private final ModelMapper modelMapper;
     private final PostRequestExceptionHandler exceptionHandler;
-    private final MailPostService postService;
+    private final PostService postService;
 
     @PostMapping("/new")
     public ResponseEntity<HttpStatus> addNewPost(@RequestBody @Valid PostDto postDto,
@@ -31,26 +33,40 @@ public class MailPostController {
         if (result.hasErrors()){
             throw new DtoBadRequestException(exceptionHandler.generateMessageAboutErrors(result));
         }
-        var temp =  postService.save(convertToPost(postDto));
+        var temp =  postService.save(modelMapper.map(postDto, Post.class));
         log.info("Post с id " + temp.getIndex() + " сохранен");
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @ExceptionHandler
-    private ResponseEntity<RequestErrorResponse> departureError(DtoBadRequestException e) {
-        RequestErrorResponse response = new RequestErrorResponse(
-                e.getMessage(),
-                System.currentTimeMillis()
-        );
-        log.error("Пользователь не cоздан в  " + response.getDateTime() + " - недопустимые данные");
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    @GetMapping("/{id}")
+    public PostDto getPostById(@PathVariable("id") int id){
+        return modelMapper.map(postService.getPostById(id), PostDto.class);
     }
 
-    public Post convertToPost(PostDto dto) {
-        return modelMapper.map(dto, Post.class);
+    @PostMapping("/update/{name}")
+    public ResponseEntity<HttpStatus> updatePostInfo(@PathVariable("name") String name, @RequestBody PostDto postDto){
+        var temp = postService.searchPost(name);
+        updateDataAboutCurrentPost(temp.getId(), postDto);
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
-    public PostDto convertToDTO(Post post) {
-        return modelMapper.map(post, PostDto.class);
+    @GetMapping
+    public List<PostDto> getMailPosts(){
+        return postService.getAllPosts().stream()
+                .map(post -> modelMapper.map(post, PostDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @DeleteMapping("/delete/{name}")
+    public ResponseEntity<HttpStatus> deletePost(@PathVariable("name") String name){
+        postService.delete(name);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    public void updateDataAboutCurrentPost(int postId, PostDto postDto){
+        var updatedPost = modelMapper.map(postDto, Post.class);
+        updatedPost.setId(postId);
+        postService.save(updatedPost);
+        log.info("Пост "+ updatedPost.getName() + " был обновлен");
     }
 }
