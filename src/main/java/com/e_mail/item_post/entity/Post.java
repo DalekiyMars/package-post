@@ -3,11 +3,9 @@ package com.e_mail.item_post.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @ToString
@@ -15,9 +13,9 @@ import java.util.UUID;
 @Table(name = "posts")
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @UuidGenerator
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
 
     @Column(name = "index")
     private String index;

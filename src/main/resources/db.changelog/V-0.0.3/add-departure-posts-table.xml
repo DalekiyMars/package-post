@@ -13,12 +13,12 @@
         </preConditions>
         <createTable tableName="departures-posts">
             <column name="id" type="BIGSERIAL">
-                <constraints foreignKeyName="true"/>
+                <constraints primaryKey="true" unique="true"/>
             </column>
             <column name="departure_id" type="uuid">
 
             </column>
-            <column name="post_id" type="uuid">
+            <column name="post_id" type="BIGSERIAL">
 
             </column>
             <column name="when_arrived" type="TIMESTAMP"

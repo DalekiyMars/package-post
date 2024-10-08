@@ -1,10 +1,7 @@
 package com.e_mail.item_post.controller;
 
 import com.e_mail.item_post.db.service.DeparturePostService;
-import com.e_mail.item_post.db.service.DepartureService;
-import com.e_mail.item_post.db.service.PostService;
 import com.e_mail.item_post.dto.DeparturePostDto;
-import com.e_mail.item_post.entity.DeparturePost;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -30,8 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
     description = "Accumulates Post and Departure entities to write information when current departure changed its status or was sent to another post")
 public class DeparturePostController {
     private final DeparturePostService departurePostService;
-    private final DepartureService departureService;
-    private final PostService postService;
 
     @Operation(
             summary = "Creates note",
@@ -56,12 +51,7 @@ public class DeparturePostController {
     @PostMapping("/new")
     public ResponseEntity<HttpStatus> saveDeparturePost(@RequestBody
                                                         @Validated DeparturePostDto departurePostDto){
-        DeparturePost departurePost = new DeparturePost();
-        departurePost.setDeparture(departureService.findOne(departurePostDto.getDepartureId()));
-        departurePost.setPost(postService.searchPost(departurePostDto.getPostId()));
-        departurePost.setStatus(departurePostDto.getUpdatedStatus());
-        departurePostService.saveDepartureAndUpdatedPost(departurePost);
-
+        departurePostService.saveDepartureAndUpdatedPost(departurePostDto);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
