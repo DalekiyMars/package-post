@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/departures")
-@Tag(name = "Departures", description = "Departure API")
+@Tag(name = "Departures", description = "Departure API to manipulate it")
 public class DepartureController {
     private final DepartureService departureService;
     private final ModelMapper modelMapper;
