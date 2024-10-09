@@ -18,8 +18,9 @@
             <column name="departure_id" type="uuid">
 
             </column>
-            <column name="post_id" type="BIGSERIAL">
-
+            <column name="post_address" type="varchar">
+            </column>
+            <column name="post_index" type="varchar(6)">
             </column>
             <column name="when_arrived" type="TIMESTAMP"
                     defaultValueComputed="CURRENT_TIMESTAMP" />
@@ -31,10 +32,10 @@
                                  referencedColumnNames="id"
                                  referencedTableName="departures"/>
 
-        <addForeignKeyConstraint baseColumnNames="post_id"
+        <addForeignKeyConstraint baseColumnNames="post_address, post_index"
                                  baseTableName="departures-posts"
                                  constraintName="fk_posts_id"
-                                 referencedColumnNames="id"
+                                 referencedColumnNames="index,address"
                                  referencedTableName="posts"/>
 
 
