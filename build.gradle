@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.e-mail'
-version = '0.0.1-SNAPSHOT'
+version = getVersion()
 
 java {
 	toolchain {
@@ -45,4 +45,8 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+def getVersion() {
+	return "${MAJOR}.${MINOR}.${PATCH}"
 }

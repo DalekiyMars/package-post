@@ -43,12 +43,6 @@ public class DepartureControllerTest {
     }
 
     @Test
-    void getDepartureTest() {
-        var answer = departureController.getDeparture(0);
-
-    }
-
-    @Test
     void convertToDeparture() {
 
     }

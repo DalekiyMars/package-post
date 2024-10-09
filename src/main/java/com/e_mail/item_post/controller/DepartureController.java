@@ -18,13 +18,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
 @RestController
 @RequestMapping("/departures")
-@Tag(name = "Departures", description = "Departure API")
+@Tag(name = "Departures", description = "Departure API to manipulate it")
 public class DepartureController {
     private final DepartureService departureService;
     private final ModelMapper modelMapper;
@@ -66,7 +67,7 @@ public class DepartureController {
             }
     )
     @GetMapping("/{id}")
-    public DepartureDto getDeparture(@PathVariable("id") int id) {
+    public DepartureDto getDeparture(@PathVariable("id") UUID id) {
         return modelMapper.map(departureService.findOne(id), DepartureDto.class);
     }
 
@@ -115,7 +116,7 @@ public class DepartureController {
             }
     )
     @PostMapping("/update/{id}")
-    public ResponseEntity<HttpStatus> updateDataAboutCurrentDeparture(@PathVariable("id") int id, @RequestBody @Validated DepartureDto departureDto){
+    public ResponseEntity<HttpStatus> updateDataAboutCurrentDeparture(@PathVariable("id") UUID id, @RequestBody @Validated DepartureDto departureDto){
         departureService.updateDepartureInfo(id, modelMapper.map(departureDto, Departure.class));
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -130,7 +131,7 @@ public class DepartureController {
             }
     )
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteDeparture(@PathVariable("id") int id){
+    public ResponseEntity<HttpStatus> deleteDeparture(@PathVariable("id") UUID id){
         departureService.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }

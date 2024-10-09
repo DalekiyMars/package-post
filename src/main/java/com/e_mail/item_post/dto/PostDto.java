@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 public class PostDto {
-    @NotBlank(message = "Index could be empty")
+    @NotBlank(message = "Index could not be empty")
     private String index;
 
-    @NotBlank(message = "Name could be empty")
+    @NotBlank(message = "Name could not be empty")
     private String name;
 
     @NotBlank(message = "Owner address must be not empty")
