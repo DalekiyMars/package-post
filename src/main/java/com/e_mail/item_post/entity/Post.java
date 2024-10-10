@@ -10,7 +10,9 @@ import java.util.List;
 @Data
 @ToString
 @Entity
-@Table(name = "posts")
+@Table(name = "posts", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"index", "address"})
+})
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +22,7 @@ public class Post {
     @Column(name = "index")
     private String index;
 
-    @Column(name = "name")
+    @Column(name = "address")
     private String name;
 
     @Column(name = "owner_address")

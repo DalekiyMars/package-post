@@ -18,7 +18,7 @@
             <column name="departure_id" type="uuid">
 
             </column>
-            <column name="post_address" type="varchar">
+            <column name="post_id" type="bigint">
             </column>
             <column name="post_index" type="varchar(6)">
             </column>
@@ -32,10 +32,10 @@
                                  referencedColumnNames="id"
                                  referencedTableName="departures"/>
 
-        <addForeignKeyConstraint baseColumnNames="post_address, post_index"
+        <addForeignKeyConstraint baseColumnNames="post_id"
                                  baseTableName="departures-posts"
                                  constraintName="fk_posts_id"
-                                 referencedColumnNames="index,address"
+                                 referencedColumnNames="id"
                                  referencedTableName="posts"/>
 
 

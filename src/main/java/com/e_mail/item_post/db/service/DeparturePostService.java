@@ -17,7 +17,7 @@ public class DeparturePostService {
     public DeparturePost searchDepartureAndPost(DeparturePostDto departurePostDto){
         DeparturePost departurePost = new DeparturePost();
         departurePost.setDeparture(departureService.findOne(departurePostDto.getDepartureId()));
-        departurePost.setPost(postService.searchPost(departurePostDto.getPostId()));
+        departurePost.setPost(postService.searchPost(departurePostDto.getPostAddress()));
         departurePost.setStatus(departurePostDto.getUpdatedStatus());
         return departurePost;
     }

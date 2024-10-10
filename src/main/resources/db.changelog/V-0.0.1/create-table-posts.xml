@@ -11,13 +11,11 @@
             </not>
         </preConditions>
         <createTable tableName="posts">
-            <column name="id" type="BIGSERIAL"/>
-            <column name="index" type="varchar(6)">
+            <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="address" type="varchar">
-                <constraints primaryKey="true"/>
-            </column>
+            <column name="index" type="varchar(6)"/>
+            <column name="address" type="varchar"/>
             <column name="owner_address" type="varchar">
 
             </column>
