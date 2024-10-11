@@ -8,5 +8,4 @@ import java.util.UUID;
 
 public interface DeparturePostRepository extends JpaRepository<DeparturePost, Integer> {
      List<DeparturePost> getDeparturePostByDeparture_Id(UUID departureId);
-
 }

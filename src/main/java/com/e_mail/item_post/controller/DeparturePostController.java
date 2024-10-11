@@ -2,7 +2,7 @@ package com.e_mail.item_post.controller;
 
 import com.e_mail.item_post.db.service.DeparturePostService;
 import com.e_mail.item_post.dto.DeparturePostDto;
-import com.e_mail.item_post.entity.DeparturePost;
+import com.e_mail.item_post.dto.DeparturePostEnterprise;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -57,7 +57,7 @@ public class DeparturePostController {
     }
 
     @GetMapping("/{departure_id}")
-    public List<DeparturePost> searchDeparturePost(@PathVariable("departure_id") @Validated UUID departure_id){
+    public List<DeparturePostEnterprise> searchDeparturePost(@PathVariable("departure_id") @Validated UUID departure_id){
         return departurePostService.getHistoryAboutDeparture(departure_id);
     }
 }

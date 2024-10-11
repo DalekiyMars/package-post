@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class EntityConverter {
     public DeparturePostEnterprise convertToEnterprise(DeparturePost departurePost){
-        return new DeparturePostEnterprise(departurePost.getDeparture(), departurePost.getPost(), departurePost.getWhenArrived(), departurePost.getStatus());
+        return new DeparturePostEnterprise(
+                departurePost.getDeparture(),
+                departurePost.getPost(),
+                departurePost.getWhenArrived(),
+                departurePost.getStatus());
     }
 }

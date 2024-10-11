@@ -3,20 +3,25 @@ package com.e_mail.item_post.dto;
 import com.e_mail.item_post.common.Status;
 import com.e_mail.item_post.entity.Departure;
 import com.e_mail.item_post.entity.Post;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 
-@Data
+@Getter
+@Setter
 public class DeparturePostEnterprise {
-    public DeparturePostEnterprise(Departure departure, Post post, LocalDateTime whenArrived, Status status) {
+    public DeparturePostEnterprise(Departure departure, Post post, Date whenArrived, Status status) {
         setDepartureDto(departure);
         setPostDto(post);
-        this.whenArrived = whenArrived;
+        this.whenArrived = new Timestamp(whenArrived.getTime()).toLocalDateTime();
         this.status = status;
     }
 
     public void setDepartureDto(Departure departure) {
+        this.departureDto = new DepartureDto();
         this.departureDto.setPackageType(departure.getPackageType());
         this.departureDto.setStatus(departure.getStatus());
         this.departureDto.setOwnerAddress(departure.getOwnerAddress());
@@ -25,6 +30,7 @@ public class DeparturePostEnterprise {
     }
 
     public void setPostDto(Post post) {
+        this.postDto = new PostDto();
         this.postDto.setOwnerAddress(post.getOwnerAddress());
         this.postDto.setName(post.getName());
         this.postDto.setIndex(post.getIndex());
@@ -37,6 +43,4 @@ public class DeparturePostEnterprise {
     private LocalDateTime whenArrived;
 
     private Status status;
-
-
 }

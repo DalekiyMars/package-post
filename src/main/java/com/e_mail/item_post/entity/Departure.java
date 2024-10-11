@@ -2,11 +2,10 @@ package com.e_mail.item_post.entity;
 
 import com.e_mail.item_post.common.PackageType;
 import com.e_mail.item_post.common.Status;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -14,11 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Data
-@ToString
+//TODO переписать везде hashcode, equals и toString
 @Entity
 @Table(name = "departures")
 @Accessors(chain = true)
+@Getter
+@Setter
 public class Departure {
     @Id
     @Column(name = "id")
@@ -47,6 +47,5 @@ public class Departure {
     private Status status;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "departure")
-    @JsonManagedReference
     private List<DeparturePost> departurePosts = new ArrayList<>();
 }
