@@ -2,6 +2,7 @@ package com.e_mail.item_post.controller;
 
 import com.e_mail.item_post.db.service.DeparturePostService;
 import com.e_mail.item_post.dto.DeparturePostDto;
+import com.e_mail.item_post.entity.DeparturePost;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -55,13 +56,8 @@ public class DeparturePostController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-//    @PostMapping("/{departure_id}")
-//    public DeparturePostDto searchDeparturePost(@RequestBody
-//                                                        @Validated UUID departure_id){
-//        //TODO вывод экземпляра через id у departure
-//
-//        //return ResponseEntity.ok(HttpStatus.OK);
-//    }
-
-
+    @GetMapping("/{departure_id}")
+    public List<DeparturePost> searchDeparturePost(@PathVariable("departure_id") @Validated UUID departure_id){
+        return departurePostService.getHistoryAboutDeparture(departure_id);
+    }
 }

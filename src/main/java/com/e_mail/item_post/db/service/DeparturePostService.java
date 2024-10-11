@@ -7,13 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class DeparturePostService {
     private final DeparturePostRepository departurePostRepository;
     private final DepartureService departureService;
     private final PostService postService;
-
     public DeparturePost searchDepartureAndPost(DeparturePostDto departurePostDto){
         DeparturePost departurePost = new DeparturePost();
         departurePost.setDeparture(departureService.findOne(departurePostDto.getDepartureId()));
@@ -25,5 +27,9 @@ public class DeparturePostService {
     @Transactional
     public void saveDepartureAndUpdatedPost(DeparturePostDto departurePostDto){
         departurePostRepository.save(searchDepartureAndPost(departurePostDto));
+    }
+
+    public List<DeparturePost> getHistoryAboutDeparture(UUID departureId){
+        return departurePostRepository.getDeparturePostByDeparture_Id(departureId);
     }
 }

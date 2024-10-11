@@ -1,8 +1,10 @@
 package com.e_mail.item_post.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
 @Table(name = "posts", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"index", "address"})
 })
+@Accessors(chain = true)
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +32,7 @@ public class Post {
     private String ownerAddress;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
+    @JsonManagedReference
     private List<DeparturePost> postWithThisDeparture = new ArrayList<>();
 
 }

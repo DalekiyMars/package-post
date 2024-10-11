@@ -1,6 +1,7 @@
 package com.e_mail.item_post.entity;
 
 import com.e_mail.item_post.common.Status;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,10 +18,12 @@ public class DeparturePost {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "departure_id")
+    @JsonBackReference
     private Departure departure;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
+    @JsonBackReference
     private Post post;
 
     @Column(name = "when_arrived")

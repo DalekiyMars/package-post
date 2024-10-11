@@ -2,6 +2,7 @@ package com.e_mail.item_post.entity;
 
 import com.e_mail.item_post.common.PackageType;
 import com.e_mail.item_post.common.Status;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -46,7 +47,6 @@ public class Departure {
     private Status status;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "departure")
+    @JsonManagedReference
     private List<DeparturePost> departurePosts = new ArrayList<>();
-
-
 }
