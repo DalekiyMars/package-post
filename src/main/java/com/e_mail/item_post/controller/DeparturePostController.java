@@ -26,7 +26,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Tag(name = "Departure-Post",
     description = "Accumulates Post and Departure entities to write information when current departure changed its status or was sent to another post")
-public class DeparturePostController {
+    public class DeparturePostController {
     private final DeparturePostService departurePostService;
 
     @Operation(
@@ -56,8 +56,47 @@ public class DeparturePostController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Returns all history about departure",
+            description = "Validates departure with given UUID and returns its history about post transaction if exists",
+            parameters = {
+                    @Parameter(name = "id", description = "Departure ID")
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Records found",
+                            content = @Content(schema = @Schema(implementation = DeparturePostEnterprise.class),
+                            mediaType = "JSON")
+                    ),
+                    @ApiResponse(responseCode = "400", description = "Incorrect id",
+                            content = @Content
+                    )
+            }
+    )
     @GetMapping("/{departure_id}")
-    public List<DeparturePostEnterprise> searchDeparturePost(@PathVariable("departure_id") @Validated UUID departure_id){
-        return departurePostService.getHistoryAboutDeparture(departure_id);
+    public List<DeparturePostEnterprise> searchDeparturePost(@PathVariable("departure_id")
+                                                             @Validated UUID departureId){
+        return departurePostService.getHistoryAboutDeparture(departureId);
+    }
+
+    @Operation(
+            summary = "Delete records about departures",
+            description = "Validates departure with given UUID and deletes its history about post transaction if exists",
+            parameters = {
+                    @Parameter(name = "id", description = "Departure ID")
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Records deleted",
+                            content = @Content
+                    ),
+                    @ApiResponse(responseCode = "400", description = "Incorrect id",
+                            content = @Content
+                    )
+            }
+    )
+    @GetMapping("/deleteHistory/{departure_id}")
+    public ResponseEntity<HttpStatus> deleteCurrentHistory(@PathVariable("departure_id")
+                                                           @Validated UUID departureId){
+        departurePostService.deleteDepartureAndPostHistory(departureId);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
