@@ -26,7 +26,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Tag(name = "Departure-Post",
     description = "Accumulates Post and Departure entities to write information when current departure changed its status or was sent to another post")
-public class DeparturePostController {
+    public class DeparturePostController {
     private final DeparturePostService departurePostService;
 
     @Operation(
@@ -57,7 +57,15 @@ public class DeparturePostController {
     }
 
     @GetMapping("/{departure_id}")
-    public List<DeparturePostEnterprise> searchDeparturePost(@PathVariable("departure_id") @Validated UUID departure_id){
-        return departurePostService.getHistoryAboutDeparture(departure_id);
+    public List<DeparturePostEnterprise> searchDeparturePost(@PathVariable("departure_id")
+                                                             @Validated UUID departureId){
+        return departurePostService.getHistoryAboutDeparture(departureId);
+    }
+
+    @GetMapping("/deleteHistory/{departure_id}")
+    public ResponseEntity<HttpStatus> deleteCurrentHistory(@PathVariable("departure_id")
+                                                           @Validated UUID departureId){
+        departurePostService.deleteDepartureAndPostHistory(departureId);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

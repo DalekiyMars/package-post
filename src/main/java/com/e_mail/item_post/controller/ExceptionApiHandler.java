@@ -5,6 +5,7 @@ import com.e_mail.item_post.util.ExceptionMessageCreator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.spi.ErrorMessage;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,6 +33,11 @@ public class ExceptionApiHandler {
     public ResponseEntity<ErrorMessage> onConstraintValidationException(MethodArgumentNotValidException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(exceptionMessageCreator.getExceptionMessages(exception));
+    }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus
+    public ResponseEntity<ErrorMessage> onConstraintValidationException(DataIntegrityViolationException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage("Already exists"));
     }
 
     @ExceptionHandler(Exception.class)
