@@ -1,39 +1,38 @@
 package com.e_mail.item_post.entity;
 
+import com.e_mail.item_post.common.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 import java.util.Objects;
 
+@Entity
+@Table(name = "departures-posts")
 @Getter
 @Setter
-@Entity
-@Table(name = "posts", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"index", "address"})
-})
-@Accessors(chain = true)
-public class Post {
+public class DeparturePost {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @Column(name = "index")
-    private String index;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "departure_id")
+    private Departure departure;
 
-    @Column(name = "address")
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
 
-    @Column(name = "owner_address")
-    private String ownerAddress;
+    @Column(name = "when_arrived")
+    private Date whenArrived;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
-    private List<DeparturePost> postWithThisDeparture = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    @Column(name = "new_status")
+    private Status status;
 
     @Override
     public final boolean equals(Object o) {
@@ -42,8 +41,8 @@ public class Post {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Post post = (Post) o;
-        return Objects.equals(getId(), post.getId());
+        DeparturePost that = (DeparturePost) o;
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override

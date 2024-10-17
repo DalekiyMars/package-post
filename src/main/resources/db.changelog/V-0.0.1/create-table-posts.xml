@@ -12,12 +12,10 @@
         </preConditions>
         <createTable tableName="posts">
             <column name="id" type="BIGSERIAL">
-                <constraints primaryKey="true" />
+                <constraints primaryKey="true"/>
             </column>
             <column name="index" type="varchar(6)"/>
-            <column name="name" type="varchar">
-
-            </column>
+            <column name="address" type="varchar"/>
             <column name="owner_address" type="varchar">
 
             </column>

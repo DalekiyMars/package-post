@@ -26,17 +26,17 @@ public class PostService {
         return mailPostRepository.findAll();
     }
 
-    public Post getPostById(int id){
+    public Post getPostById(long id){
         return mailPostRepository.findById(id).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
     }
 
-    public Post searchPost(String oldPostName){
-        return mailPostRepository.findByName(oldPostName).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
+    public Post searchPost(long id){
+        return mailPostRepository.findById(id).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
     }
 
     @Transactional
-    public void delete(String oldPostName){
-        var foundPost = searchPost(oldPostName);
+    public void delete(long id){
+        var foundPost = searchPost(id);
         log.info(foundPost.toString() + " будет удален");
         mailPostRepository.delete(foundPost);
 
