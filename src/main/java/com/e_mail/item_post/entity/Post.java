@@ -21,15 +21,15 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "index")
     private String index;
 
-    @Column(name = "address")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "owner_address")
+    @Column(name = "address")
     private String ownerAddress;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")

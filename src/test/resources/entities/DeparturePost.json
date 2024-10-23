@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "departure": {
+    "id": "9fda0463-0701-4405-9f53-980e537f88d2",
+    "packageType": "LETTER",
+    "ownerIndex": "string",
+    "ownerAddress": "string",
+    "ownerName": "string",
+    "status": "ARRIVED"
+  },
+  "post": {
+    "id": 1,
+    "index": "196655",
+    "name": "Pavel",
+    "ownerAddress": "Pushkino"
+  },
+  "whenArrived": "2024-10-20T22:02:06.536",
+  "status": "ARRIVED"
+}

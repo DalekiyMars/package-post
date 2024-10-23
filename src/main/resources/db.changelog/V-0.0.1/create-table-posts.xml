@@ -15,8 +15,8 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="index" type="varchar(6)"/>
-            <column name="address" type="varchar"/>
-            <column name="owner_address" type="varchar">
+            <column name="name" type="varchar"/>
+            <column name="address" type="varchar">
 
             </column>
         </createTable>
