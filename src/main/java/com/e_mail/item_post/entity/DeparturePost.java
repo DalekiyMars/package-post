@@ -10,14 +10,14 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "departures-posts")
+@Table(name = "departures_posts")
 @Getter
 @Setter
 public class DeparturePost {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "departure_id")
