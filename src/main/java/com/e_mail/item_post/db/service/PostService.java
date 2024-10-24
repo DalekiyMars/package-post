@@ -22,6 +22,13 @@ public class PostService {
         return mailPostRepository.save(post);
     }
 
+    @Transactional
+    public void updateDataAboutCurrentPost(long postId, Post updatedPost) {
+        updatedPost.setId(postId);
+        save(updatedPost);
+        log.info("Пост " + updatedPost.getName() + " был обновлен");
+    }
+
     public List<Post> getAllPosts(){
         return mailPostRepository.findAll();
     }

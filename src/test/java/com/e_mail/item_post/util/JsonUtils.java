@@ -1,5 +1,6 @@
 package com.e_mail.item_post.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -28,5 +29,9 @@ public class JsonUtils {
 
     public static <T> String convertJsonFromObjectToString(T object) throws IOException {
         return WRITER.writeValueAsString(object);
+    }
+
+    public static <T> T convertJsonStringToObject(String json, Class<T> clazz) throws JsonProcessingException {
+        return MAPPER.readValue(json, clazz);
     }
 }
