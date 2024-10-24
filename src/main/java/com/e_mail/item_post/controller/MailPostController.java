@@ -101,7 +101,8 @@ public class MailPostController {
     )
     @PostMapping("/update/{id}")
     public ResponseEntity<HttpStatus> updatePostInfo(@PathVariable("id") long id, @RequestBody @Validated PostDto postDto) {
-        postService.updateDataAboutCurrentPost(postService.searchPost(id).getId(), modelMapper.map(postDto, Post.class));
+        var temp = postService.searchPost(id);
+        updateDataAboutCurrentPost(temp.getId(), postDto);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
@@ -141,5 +142,12 @@ public class MailPostController {
     public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") long id) {
         postService.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    public void updateDataAboutCurrentPost(long postId, PostDto postDto) {
+        var updatedPost = modelMapper.map(postDto, Post.class);
+        updatedPost.setId(postId);
+        postService.save(updatedPost);
+        log.info("Пост " + updatedPost.getName() + " был обновлен");
     }
 }

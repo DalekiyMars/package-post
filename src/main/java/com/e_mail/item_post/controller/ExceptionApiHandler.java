@@ -27,13 +27,13 @@ public class ExceptionApiHandler {
                 .body(new ErrorMessage(exception.getMessage()));
     }
 
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus
     public ResponseEntity<ErrorMessage> onConstraintValidationException(MethodArgumentNotValidException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(exceptionMessageCreator.getExceptionMessages(exception));
     }
-
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus
     public ResponseEntity<ErrorMessage> onConstraintValidationException(DataIntegrityViolationException exception) {
