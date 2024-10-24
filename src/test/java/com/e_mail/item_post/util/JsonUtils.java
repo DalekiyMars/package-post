@@ -1,5 +1,6 @@
 package com.e_mail.item_post.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -8,6 +9,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class JsonUtils {
     private static final ObjectMapper MAPPER = new ObjectMapper()
@@ -28,5 +32,23 @@ public class JsonUtils {
 
     public static <T> String convertJsonFromObjectToString(T object) throws IOException {
         return WRITER.writeValueAsString(object);
+    }
+
+    public static <T> T convertJsonStringToObject(String json, Class<T> clazz) throws JsonProcessingException {
+        return MAPPER.readValue(json, clazz);
+    }
+
+    public static <T> List<T> convertJsonStringToObjectList(String json, Class<T> clazz) throws JsonProcessingException {
+        String[] rawObj = json.substring(1, json.length()-1).split("},");
+        List<T> objs = new ArrayList<>();
+        Arrays.stream(rawObj)
+                .forEach(s -> {
+                    try {
+                        objs.add(convertJsonStringToObject(s + "}", clazz));
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+        return objs;
     }
 }
