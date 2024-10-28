@@ -9,6 +9,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +40,7 @@ public class JsonUtils {
         return MAPPER.readValue(json, clazz);
     }
 
-    public static <T> List<T> convertJsonStringToObjectList(String json, Class<T> clazz) throws JsonProcessingException {
+    public static <T> List<T> convertJsonStringToObjectList(String json, Class<T> clazz){
         String[] rawObj = json.substring(1, json.length()-1).split("},");
         List<T> objs = new ArrayList<>();
         Arrays.stream(rawObj)
@@ -50,5 +52,13 @@ public class JsonUtils {
                     }
                 });
         return objs;
+    }
+
+    public static <T> String convertListToJson(List<T> list) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(list);
+    }
+    public static String readJsonToString(String filePath) throws IOException {
+        return Files.readString(Path.of(filePath));
     }
 }

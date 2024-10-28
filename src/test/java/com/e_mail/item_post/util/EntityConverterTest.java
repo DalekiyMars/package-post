@@ -12,8 +12,8 @@ class EntityConverterTest {
 
     @Test
     void convertToEnterprise() throws IOException {
-        DeparturePost a = JsonUtils.convertJsonFromFileToObject("src/test/resources/entities/DeparturePost.json", DeparturePost.class);
-        DeparturePostEnterprise expectedEntity = JsonUtils.convertJsonFromFileToObject("src/test/resources/entities/DeparturePostEnterprice.json", DeparturePostEnterprise.class);
+        DeparturePost a = JsonUtils.convertJsonFromFileToObject("src/test/resources/controller/departurePostEntities/DeparturePost.json", DeparturePost.class);
+        DeparturePostEnterprise expectedEntity = JsonUtils.convertJsonFromFileToObject("src/test/resources/controller/departurePostEntities/DeparturePostEnterprice.json", DeparturePostEnterprise.class);
 
         var entity = new EntityConverter().convertToEnterprise(a);
 

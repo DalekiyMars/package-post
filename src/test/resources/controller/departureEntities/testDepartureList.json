@@ -1,0 +1,30 @@
+[
+  {
+    "packageType": "LETTER",
+    "ownerIndex": "196656",
+    "ownerAddress": "Pushkino",
+    "ownerName": "Pavel",
+    "status": "ARRIVED"
+  },
+  {
+    "packageType": "PACKAGE",
+    "ownerIndex": "196655",
+    "ownerAddress": "Kolpino",
+    "ownerName": "notPavel",
+    "status": "WAITING"
+  },
+  {
+    "packageType": "LETTER",
+    "ownerIndex": "196656",
+    "ownerAddress": "Kolpino",
+    "ownerName": "notPavel",
+    "status": "WAITING"
+  },
+  {
+    "packageType": "LETTER",
+    "ownerIndex": "196655",
+    "ownerAddress": "Pushkino",
+    "ownerName": "Pavel",
+    "status": "SENT"
+  }
+]

@@ -7,4 +7,9 @@ public class Constants {
         public static final String INCORRECT_POST = "No post with this ID";
     }
 
+    public static class Patterns {
+        public static final String INDEX_FORMAT = "\\d{6}";
+    }
+
+
 }

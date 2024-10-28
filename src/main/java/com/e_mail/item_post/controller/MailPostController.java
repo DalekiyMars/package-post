@@ -52,8 +52,8 @@ public class MailPostController {
     )
     @PostMapping("/new")
     public ResponseEntity<HttpStatus> addNewPost(@RequestBody @Validated PostDto postDto) {
-        var temp = postService.save(modelMapper.map(postDto, Post.class));
-        log.info("Post с id " + temp.getId() + " сохранен");
+        var postFromDb = postService.save(postDto);
+        log.info("Post с id " + postFromDb.getId() + " сохранен");
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -101,7 +101,7 @@ public class MailPostController {
     )
     @PostMapping("/update/{id}")
     public ResponseEntity<HttpStatus> updatePostInfo(@PathVariable("id") long id, @RequestBody @Validated PostDto postDto) {
-        postService.updateDataAboutCurrentPost(postService.searchPost(id).getId(), modelMapper.map(postDto, Post.class));
+        postService.updateDataAboutCurrentPost(postService.getPostById(id).getId(), modelMapper.map(postDto, Post.class));
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 

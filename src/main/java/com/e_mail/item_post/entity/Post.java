@@ -2,6 +2,7 @@ package com.e_mail.item_post.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.proxy.HibernateProxy;
@@ -12,6 +13,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "posts", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"index", "address"})

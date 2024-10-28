@@ -26,7 +26,7 @@ public class DeparturePostService {
     public DeparturePost searchDepartureAndPost(DeparturePostDto departurePostDto){
         DeparturePost departurePost = new DeparturePost();
         departurePost.setDeparture(departureService.findOne(departurePostDto.getDepartureId()));
-        departurePost.setPost(postService.searchPost(departurePostDto.getPostAddress()));
+        departurePost.setPost(postService.getPostById(departurePostDto.getPostAddress()));
         departurePost.setStatus(departurePostDto.getUpdatedStatus());
         departurePost.setWhenArrived(new Date());
         log.info(departurePost + " found in DB");

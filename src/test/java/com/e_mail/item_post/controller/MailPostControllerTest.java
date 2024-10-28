@@ -2,9 +2,8 @@ package com.e_mail.item_post.controller;
 
 import com.e_mail.item_post.db.service.PostService;
 import com.e_mail.item_post.dto.PostDto;
-import com.e_mail.item_post.entity.Post;
 import com.e_mail.item_post.util.JsonUtils;
-import org.junit.jupiter.api.Assertions;
+import net.javacrumbs.jsonunit.assertj.JsonAssertions;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +42,7 @@ class MailPostControllerTest {
     @Autowired
     MailPostController controller;
 
-    final String ERROR_OWNER_ADDRESS_JSON = "{\"cause\":null,\"message\":\"Owner address must be not empty\"}";
-    final String BASE_ENTITY_PATH = "src/test/resources/controller";
+    final String BASE_ENTITY_PATH = "src/test/resources/controller/postEntities";
     final String BASE_URL_PATH = "/posts";
 
     @Container
@@ -55,6 +53,20 @@ class MailPostControllerTest {
         postgreSQLContainer.start();
     }
 
+    @Test
+    void getMailPosts() throws Exception {
+        var answer = this.mockMvc.perform(get(BASE_URL_PATH)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        var exceptedAnswer = JsonUtils.readJsonToString(BASE_ENTITY_PATH + "/responsePostList.json");
+
+        JsonAssertions.assertThatJson(answer.getResponse().getContentAsString()).isEqualTo(exceptedAnswer);
+    }
+
+    @Transactional
     @Test
     void addNewPost_RealPost() throws Exception {
         var post = JsonUtils.convertJsonFromFileToString(BASE_ENTITY_PATH + "/registerPostDto.json", PostDto.class);
@@ -74,13 +86,13 @@ class MailPostControllerTest {
                 .andReturn();
 
         var errorMessageAnswer = answer.getResponse().getContentAsString();
-        Assertions.assertEquals(errorMessageAnswer, ERROR_OWNER_ADDRESS_JSON);
+        JsonAssertions.assertThatJson(errorMessageAnswer).isEqualTo(JsonUtils.readJsonToString(BASE_ENTITY_PATH + "/responseOwnerAddressError.json"));
     }
 
 
     @Test
     void getPostById_PostExists() throws Exception {
-        this.mockMvc.perform(get(BASE_URL_PATH + "/1")
+        this.mockMvc.perform(get(BASE_URL_PATH + "/2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -93,13 +105,15 @@ class MailPostControllerTest {
                 .andReturn();
 
         var errorMessageAnswer = answer.getResponse().getContentAsString();
-        Assertions.assertEquals(errorMessageAnswer, "{\"cause\":null,\"message\":\"No post with this ID\"}");
+        JsonAssertions.assertThatJson(errorMessageAnswer).isEqualTo(JsonUtils.readJsonToString(BASE_ENTITY_PATH + "/responsePostNotExists.json"));
+
     }
 
+    @Transactional
     @Test
     void updatePostInfo_PostExists() throws Exception {
         var post = JsonUtils.convertJsonFromFileToString(BASE_ENTITY_PATH + "/registerPostDto.json", PostDto.class);
-        this.mockMvc.perform(post(BASE_URL_PATH + "/update/1")
+        this.mockMvc.perform(post(BASE_URL_PATH + "/update/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(post))
                 .andExpect(status().isOk());
@@ -124,21 +138,10 @@ class MailPostControllerTest {
                 .andReturn();
 
         var errorMessageAnswer = answer.getResponse().getContentAsString();
-        Assertions.assertEquals(errorMessageAnswer, ERROR_OWNER_ADDRESS_JSON);
+        JsonAssertions.assertThatJson(errorMessageAnswer).isEqualTo(JsonUtils.readJsonToString(BASE_ENTITY_PATH + "/responseOwnerAddressError.json"));
     }
 
     @Transactional
-    @Test
-    void getMailPosts() throws Exception {
-        var answer = this.mockMvc.perform(get(BASE_URL_PATH)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-        var haha = JsonUtils.convertJsonStringToObjectList(answer.getResponse().getContentAsString(), Post.class);
-        Assertions.assertEquals(haha.size(), 2);
-    }
-
     @Test
     void deletePost_PostExists() throws Exception {
         this.mockMvc.perform(delete(BASE_URL_PATH + "/delete/2")
@@ -154,6 +157,6 @@ class MailPostControllerTest {
                 .andReturn();
 
         var errorMessageAnswer = answer.getResponse().getContentAsString();
-        Assertions.assertEquals(errorMessageAnswer, "{\"cause\":null,\"message\":\"No post with this ID\"}");
+        JsonAssertions.assertThatJson(errorMessageAnswer).isEqualTo(JsonUtils.readJsonToString(BASE_ENTITY_PATH + "/responsePostNotExists.json"));
     }
 }
