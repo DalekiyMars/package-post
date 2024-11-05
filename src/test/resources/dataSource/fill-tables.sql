@@ -9,5 +9,5 @@ INSERT INTO posts (id, index, name, address) VALUES
     (3, '196656', 'notIvanovskiy', 'Pushkino Pivnaya 32');
 
 INSERT INTO departures_posts (id, departure_id, post_id, when_arrived, new_status) VALUES
-    (1, 'ea901f00-ecfe-4bfc-9b35-b9e0356d3e21', 2, NOW(), 'ARRIVED'),
+    (3, 'ea901f00-ecfe-4bfc-9b35-b9e0356d3e21', 2, NOW(), 'ARRIVED'),
     (2, 'ea901f00-ecfe-4bfc-9b35-b9e0356d3e22', 2, NOW(), 'ARRIVED');

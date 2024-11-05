@@ -9,7 +9,6 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class EntityConverterTest {
-
     @Test
     void convertToEnterprise() throws IOException {
         DeparturePost a = JsonUtils.convertJsonFromFileToObject("src/test/resources/controller/departurePostEntities/DeparturePost.json", DeparturePost.class);

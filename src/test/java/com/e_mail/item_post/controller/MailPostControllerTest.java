@@ -1,6 +1,5 @@
 package com.e_mail.item_post.controller;
 
-import com.e_mail.item_post.db.service.PostService;
 import com.e_mail.item_post.dto.PostDto;
 import com.e_mail.item_post.util.JsonUtils;
 import net.javacrumbs.jsonunit.assertj.JsonAssertions;
@@ -19,6 +18,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.io.IOException;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,13 +35,7 @@ class MailPostControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    PostService service;
-
-    @Autowired
     ModelMapper mapper;
-
-    @Autowired
-    MailPostController controller;
 
     final String BASE_ENTITY_PATH = "src/test/resources/controller/postEntities";
     final String BASE_URL_PATH = "/posts";
@@ -51,6 +46,14 @@ class MailPostControllerTest {
 
     static {
         postgreSQLContainer.start();
+    }
+
+    String getCorrectPostDto() throws IOException {
+        return JsonUtils.readJsonToString(BASE_ENTITY_PATH + "/registerPostDto.json");
+    }
+
+    String getIncorrectPostDto() throws IOException {
+        return JsonUtils.readJsonToString(BASE_ENTITY_PATH + "/registerPostDtoWithMistake.json");
     }
 
     @Test
@@ -69,19 +72,17 @@ class MailPostControllerTest {
     @Transactional
     @Test
     void addNewPost_RealPost() throws Exception {
-        var post = JsonUtils.convertJsonFromFileToString(BASE_ENTITY_PATH + "/registerPostDto.json", PostDto.class);
         this.mockMvc.perform(post(BASE_URL_PATH + "/new")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(post))
+                        .content(getCorrectPostDto()))
                 .andExpect(status().isOk());
     }
 
     @Test
     void addNewPost_BrokenPostInfo() throws Exception {
-        var post = JsonUtils.convertJsonFromFileToString(BASE_ENTITY_PATH + "/registerPostDtoWithMistake.json", PostDto.class);
         var answer = this.mockMvc.perform(post(BASE_URL_PATH + "/new")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(post))
+                        .content(getIncorrectPostDto()))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
 
@@ -106,7 +107,6 @@ class MailPostControllerTest {
 
         var errorMessageAnswer = answer.getResponse().getContentAsString();
         JsonAssertions.assertThatJson(errorMessageAnswer).isEqualTo(JsonUtils.readJsonToString(BASE_ENTITY_PATH + "/responsePostNotExists.json"));
-
     }
 
     @Transactional
@@ -121,19 +121,17 @@ class MailPostControllerTest {
 
     @Test
     void updatePostInfo_PostNotExists() throws Exception {
-        var post = JsonUtils.convertJsonFromFileToString(BASE_ENTITY_PATH + "/registerPostDto.json", PostDto.class);
         this.mockMvc.perform(post(BASE_URL_PATH + "/update/100")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(post))
+                        .content(getCorrectPostDto()))
                 .andExpect(status().is4xxClientError());
     }
 
     @Test
     void updatePostInfo_NewPostHasMistakes() throws Exception {
-        var post = JsonUtils.convertJsonFromFileToString(BASE_ENTITY_PATH + "/registerPostDtoWithMistake.json", PostDto.class);
         var answer = this.mockMvc.perform(post(BASE_URL_PATH + "/update/2")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(post))
+                        .content(getIncorrectPostDto()))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
 

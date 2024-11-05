@@ -40,7 +40,8 @@ public class PostService {
     }
 
     public Post getPostById(long id){
-        return mailPostRepository.findById(id).orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
+        return mailPostRepository.findById(id)
+                .orElseThrow(() -> new DtoBadRequestException(Constants.ExceptionMessages.INCORRECT_POST));
     }
 
     @Transactional

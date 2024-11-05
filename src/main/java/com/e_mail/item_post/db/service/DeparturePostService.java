@@ -1,9 +1,11 @@
 package com.e_mail.item_post.db.service;
 
+import com.e_mail.item_post.constants.Constants;
 import com.e_mail.item_post.db.repository.DeparturePostRepository;
 import com.e_mail.item_post.dto.DeparturePostDto;
 import com.e_mail.item_post.dto.DeparturePostEnterprise;
 import com.e_mail.item_post.entity.DeparturePost;
+import com.e_mail.item_post.util.DtoBadRequestException;
 import com.e_mail.item_post.util.EntityConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ public class DeparturePostService {
     private final DepartureService departureService;
     private final PostService postService;
     private final EntityConverter entityConverter;
+
     public DeparturePost searchDepartureAndPost(DeparturePostDto departurePostDto){
         DeparturePost departurePost = new DeparturePost();
         departurePost.setDeparture(departureService.findOne(departurePostDto.getDepartureId()));
@@ -40,13 +43,18 @@ public class DeparturePostService {
     }
 
     public List<DeparturePostEnterprise> getHistoryAboutDeparture(UUID departureId){
-        var temp = departurePostRepository.getDeparturePostByDeparture_Id(departureId);
-        log.info("Departure with UUID: " + departureId + " got " + temp.size() + " records");
-        return temp.stream().map(entityConverter::convertToEnterprise).collect(Collectors.toList());
+        var takenList = departurePostRepository.getDeparturePostByDeparture_Id(departureId);
+        log.info("Departure with UUID: " + departureId + " got " + takenList.size() + " records");
+
+        if (takenList.isEmpty()) throw new DtoBadRequestException(Constants.ExceptionMessages.ENTITY_NOT_EXISTS);
+        return takenList.stream().map(entityConverter::convertToEnterprise)
+                .collect(Collectors.toList());
     }
 
     @Transactional
     public void deleteDepartureAndPostHistory(UUID departureId){
+        var entityExists = departurePostRepository.existsDeparturePostByDeparture_Id(departureId);
+        if (!entityExists) throw new DtoBadRequestException(Constants.ExceptionMessages.ENTITY_NOT_EXISTS);
         log.info("Records with departures UUID: " + departureId + " deleted");
         departurePostRepository.deleteAllByDeparture_Id(departureId);
     }
