@@ -37,9 +37,9 @@ public class DeparturePostService {
     }
 
     @Transactional
-    public void saveDepartureAndUpdatedPost(DeparturePostDto departurePostDto){
+    public DeparturePost saveDepartureAndUpdatedPost(DeparturePostDto departurePostDto){
         log.info(departurePostDto.toString() + " saved");
-        departurePostRepository.save(searchDepartureAndPost(departurePostDto));
+        return departurePostRepository.save(searchDepartureAndPost(departurePostDto));
     }
 
     public List<DeparturePostEnterprise> getHistoryAboutDeparture(UUID departureId){

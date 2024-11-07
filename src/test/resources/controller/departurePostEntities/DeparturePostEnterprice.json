@@ -1,16 +1,16 @@
 {
   "departureDto": {
     "packageType": "LETTER",
-    "ownerIndex": "string",
-    "ownerAddress": "string",
-    "ownerName": "string",
+    "ownerIndex": "ARRIVED",
+    "ownerAddress": "Pushkino",
+    "ownerName": "Pavel",
     "status": "ARRIVED"
   },
   "postDto": {
     "index": "196655",
-    "name": "Pavel",
-    "ownerAddress": "Pushkino"
+    "name": "Ivanovskiy",
+    "ownerAddress": "Kolpino Tverskaya 41"
   },
-  "whenArrived": "2024-10-20T22:02:06.536",
+  "whenArrived": 1729461726536,
   "status": "ARRIVED"
 }
