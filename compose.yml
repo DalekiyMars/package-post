@@ -9,7 +9,6 @@ services:
     ports:
       - '5436:5432'
 
-#  sonarqube:
 #    image: sonarqube:9.9-community
 #    restart: always
 #    container_name: sonarqube
