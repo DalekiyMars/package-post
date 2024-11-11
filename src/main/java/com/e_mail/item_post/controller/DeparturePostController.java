@@ -93,7 +93,7 @@ import java.util.UUID;
                     )
             }
     )
-    @GetMapping("/deleteHistory/{departure_id}")
+    @DeleteMapping("/deleteHistory/{departure_id}")
     public ResponseEntity<HttpStatus> deleteCurrentHistory(@PathVariable("departure_id")
                                                            @Validated UUID departureId){
         departurePostService.deleteDepartureAndPostHistory(departureId);

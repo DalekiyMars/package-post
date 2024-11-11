@@ -2,6 +2,7 @@ package com.e_mail.item_post.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.proxy.HibernateProxy;
@@ -12,6 +13,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "posts", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"index", "address"})
@@ -21,15 +23,15 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "index")
     private String index;
 
-    @Column(name = "address")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "owner_address")
+    @Column(name = "address")
     private String ownerAddress;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")

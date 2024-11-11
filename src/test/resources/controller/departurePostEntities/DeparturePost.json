@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "departure": {
+    "id": "ea901f00-ecfe-4bfc-9b35-b9e0356d3e21",
+    "packageType": "LETTER",
+    "ownerIndex": "196656",
+    "ownerAddress": "Pushkino",
+    "ownerName": "Pavel",
+    "status": "ARRIVED"
+  },
+  "post": {
+    "id": 2,
+    "index": "196655",
+    "name": "Ivanovskiy",
+    "ownerAddress": "Kolpino Tverskaya 41"
+  },
+  "whenArrived": "2024-10-20T22:02:06.536",
+  "status": "ARRIVED"
+}
