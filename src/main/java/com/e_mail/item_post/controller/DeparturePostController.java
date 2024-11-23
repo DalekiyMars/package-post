@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -74,7 +75,7 @@ import java.util.UUID;
     )
     @GetMapping("/{departure_id}")
     public List<DeparturePostEnterprise> searchDeparturePost(@PathVariable("departure_id")
-                                                             @Validated UUID departureId){
+                                                             @NotNull UUID departureId){
         return departurePostService.getHistoryAboutDeparture(departureId);
     }
 
@@ -95,7 +96,7 @@ import java.util.UUID;
     )
     @DeleteMapping("/deleteHistory/{departure_id}")
     public ResponseEntity<HttpStatus> deleteCurrentHistory(@PathVariable("departure_id")
-                                                           @Validated UUID departureId){
+                                                           @NotNull UUID departureId){
         departurePostService.deleteDepartureAndPostHistory(departureId);
         return ResponseEntity.ok(HttpStatus.OK);
     }

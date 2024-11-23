@@ -7,7 +7,7 @@
 
     <changeSet id="v0-0-0-6" author="DalekiyMars">
         <dropColumn columnName="post_index"
-                    tableName="departures-posts">
+                    tableName="departures_posts">
 
         </dropColumn>
     </changeSet>

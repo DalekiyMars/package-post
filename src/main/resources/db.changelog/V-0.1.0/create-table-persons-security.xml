@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="v-0-1-0" author="DalekiyMars">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <tableExists tableName="persons"/>
+            </not>
+        </preConditions>
+        <createTable tableName="persons">
+            <column name="id" type="BIGINT" autoIncrement="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+            </column>
+            <column name="date_of_birth" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
